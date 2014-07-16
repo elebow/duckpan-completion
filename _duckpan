@@ -1,0 +1,35 @@
+#compdef duckpan
+
+# zsh completion script for duckpan (https://github.com/duckduckgo/p5-app-duckpan)
+# https://github.com/elebow/duckpan-completion/blob/master/_duckpan
+
+local curcontext="$curcontext" state line
+
+local -a commands_array
+commands_array=(
+	'query: Test Goodie and Spice triggers interactively on the command line.'
+	'server: Starts a local web server, which emulates the DuckDuckGo production environment.'
+	'help: Shows you the DuckPAN help page which briefly describes DuckPAN and its features.'
+	'test: Tests your release, by running the tests in the t/ directory using Dzil (if a dist.ini exists) or prove.'
+	'installdeps: Attempt to install dependencies for the distribution in your current directory using cpanm.'
+	'roadrunner: Same as installdeps, but without testing them. Meep meep!'
+	'poupload: Upload a po file to the Community Platform. This is for Translation Managers only.'
+	'publisher: Starts a local web server which displays static websites created with DuckDuckGo-Publisher.'
+	'release: Pushes a new release of the current project (ie. Spice, Goodie or Publisher) to DuckPAN.org.'
+	'setup: Helps configure your environment so you can use Dist::Zilla::Plugin::UploadToDuckPAN, which is used by duckpan release.'
+	'env name value: Add an environment variable that DuckPAN will remember.'
+	'env rm name: Remove an environment variable from DuckPAN.'
+)
+
+_arguments -C \
+	'1:_:->expand_commands'\
+	'-I[Loads the specified external library.]'\
+	{-v,--verbose}'[Provides more output from server.]'\
+	'--no-cache[Forces the cache to be repopulated each time the server starts (defaults to using cached copies of assets unless newer versions exist).]'
+	#TODO the last two apply to 'duckpan server' only
+
+case $state in
+	expand_commands)
+		_describe -t commands 'duckpan command' commands_array
+	;;
+esac
